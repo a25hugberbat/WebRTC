@@ -1,17 +1,20 @@
 // ============================================================
 //  SERVIDOR DE SEÑALIZACIÓN (signaling server)
-//  Este servidor NO transporta el vídeo ni los mensajes del chat.
+//  Este servidor NO transporta los mensajes del chat.
 //  Solo sirve para:
 //    1) Servir la app de Vue ya compilada (carpeta "dist")
 //    2) Guardar quién está conectado (nombre de cada usuario)
 //    3) Hacer de "cartero" entre dos navegadores para que
 //       puedan presentarse y crear la conexión WebRTC P2P.
+//
+//  Usa "import" (y no "require") porque el package.json que crea
+//  "npm create vue" tiene "type": "module".
 // ============================================================
 
-const express = require('express');
-const http = require('http');
-const path = require('path');
-const { Server } = require('socket.io');
+import express from 'express';
+import http from 'node:http';
+import { fileURLToPath } from 'node:url';
+import { Server } from 'socket.io';
 
 const app = express();
 const server = http.createServer(app);
@@ -20,7 +23,7 @@ const io = new Server(server);
 const PORT = process.env.PORT || 3000;
 
 // Servimos la app de Vue compilada con "npm run build"
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(fileURLToPath(new URL('./dist', import.meta.url))));
 
 // Lista de usuarios conectados: socket.id -> nombre
 const usuaris = new Map();

@@ -20,8 +20,8 @@ body {
 .targeta h1 { font-size: 1.3rem; margin-top: 0; }
 .targeta form { display: flex; flex-direction: column; gap: 10px; }
 
-input, button, select { font: inherit; padding: 8px 10px; border-radius: 6px; }
-input, select { border: 1px solid #bbb; background: #fff; }
+input, button { font: inherit; padding: 8px 10px; border-radius: 6px; }
+input { border: 1px solid #bbb; background: #fff; }
 button { border: none; background: #2f6fed; color: #fff; cursor: pointer; }
 button:disabled { background: #9db5e8; cursor: default; }
 
@@ -29,33 +29,15 @@ button:disabled { background: #9db5e8; cursor: default; }
 .pantalla-xat { display: flex; height: 100vh; }
 
 .lateral {
-  width: 260px;
+  width: 240px;
   background: #fff;
   border-right: 1px solid #ddd;
   padding: 16px;
   overflow-y: auto;
 }
 .lateral h2 { font-size: 1rem; margin: 16px 0 8px; }
-.jo { margin: 0 0 10px; font-size: .9rem; color: #555; }
+.jo { margin: 0; font-size: .9rem; color: #555; }
 .ajuda { font-size: .8rem; color: #888; }
-
-/* ---------- Mi cámara ---------- */
-#localVideo {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  background: #111;
-  border-radius: 8px;
-  object-fit: cover;
-  transform: scaleX(-1);        /* efecto espejo, como en una videollamada */
-}
-.video-local .ajuda { margin: 6px 0; }
-
-.controls { display: flex; gap: 6px; margin: 8px 0; }
-.controls button { flex: 1; font-size: .8rem; padding: 6px 8px; background: #4a5568; }
-.controls button:disabled { background: #b8bfca; }
-
-.video-local label { display: block; margin-top: 4px; }
-#availableCameras { width: 100%; font-size: .85rem; padding: 6px 8px; }
 
 /* ---------- Lista de conectados ---------- */
 .llista-usuaris { list-style: none; padding: 0; margin: 0; }
@@ -97,18 +79,6 @@ button:disabled { background: #9db5e8; cursor: default; }
   font-weight: 600;
 }
 
-/* Vídeo de la otra persona */
-.zona-video {
-  background: #111;
-  display: flex;
-  justify-content: center;
-}
-#remoteVideo {
-  width: 100%;
-  max-height: 45vh;
-  object-fit: contain;
-}
-
 .missatges {
   flex: 1;
   list-style: none;
@@ -146,7 +116,5 @@ button:disabled { background: #9db5e8; cursor: default; }
 
 @media (max-width: 600px) {
   .pantalla-xat { flex-direction: column; }
-  .lateral { width: 100%; max-height: 40vh; border-right: none; border-bottom: 1px solid #ddd; }
-  #localVideo { width: 50%; }
-  #remoteVideo { max-height: 30vh; }
+  .lateral { width: 100%; max-height: 35vh; border-right: none; border-bottom: 1px solid #ddd; }
 }

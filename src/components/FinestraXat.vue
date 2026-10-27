@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 
 const props = defineProps({
   nom: String,   // nombre de la otra persona
-  xat: Object    // { missatges, noLlegits, connectat, stream }
+  xat: Object    // { missatges, noLlegits, connectat }
 });
 
 const emit = defineEmits(['enviar']);
@@ -31,12 +31,7 @@ watch(
 
 <template>
   <main class="xat">
-    <header class="cap-xat">Videotrucada P2P amb {{ nom }}</header>
-
-    <!-- Vídeo de la otra persona (solo si nos llega) -->
-    <div v-if="xat.stream" class="zona-video">
-      <video id="remoteVideo" :srcObject="xat.stream" autoplay playsinline></video>
-    </div>
+    <header class="cap-xat">Xat P2P amb {{ nom }}</header>
 
     <ul ref="llista" class="missatges">
       <li v-for="(m, i) in xat.missatges" :key="i" :class="m.de">{{ m.text }}</li>

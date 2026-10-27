@@ -1,16 +1,20 @@
 # Xat WebRTC amb Vue
 
-AEA2 Activitat 1: xat i videotrucada P2P amb WebRTC i **Vue 3** (Composition API). La comunicació s'inicia amb WebSockets (Socket.IO).
+AEA2 Activitat 1: xat de text P2P amb WebRTC i **Vue 3** (Composition API). La comunicació s'inicia amb WebSockets (Socket.IO).
+
+Projecte creat amb `npm create vue@latest` (JavaScript, sense features, projecte en blanc).
 
 ## Què fa
 
 1. Només entrar, demana el nom.
 2. Mostra el llistat de tots els connectats.
-3. En clicar un usuari, s'obre una connexió P2P amb WebRTC:
-   - vídeo i àudio amb `getUserMedia` + `addTrack`
-   - missatges de text amb un `RTCDataChannel`
+3. En clicar un usuari, s'obre un xat P2P amb WebRTC: els missatges van per un `RTCDataChannel`, directament d'un navegador a l'altre.
 
-El servidor (Node + Express + Socket.IO) només fa de **senyalització**: guarda la llista d'usuaris i reenvia l'oferta, la resposta i els candidats ICE. Els missatges i el vídeo van directament d'un navegador a l'altre.
+El servidor (Node + Express + Socket.IO) només fa de **senyalització**: guarda la llista d'usuaris i reenvia l'oferta, la resposta i els candidats ICE.
+
+## Requisits
+
+Node 22.18 o més nou (el demana Vite).
 
 ## Com executar-ho
 
@@ -29,13 +33,11 @@ npm run dev     # Vite al port 5173 -> obre http://localhost:5173
 
 Obre l'app en dues finestres (una d'elles d'incògnit) per provar-la.
 
-> Fora de `localhost`, la càmera només funciona amb **HTTPS**. Si s'obre amb `http://`, l'app funciona només amb text.
-
 ## Estructura
 
 ```
 ├── server.js                  servidor de senyalització (Socket.IO) + serveix dist/
-├── vite.config.mjs            Vite + proxy de /socket.io en desenvolupament
+├── vite.config.js             de create-vue + proxy de /socket.io en desenvolupament
 ├── index.html
 └── src/
     ├── main.js
@@ -43,13 +45,11 @@ Obre l'app en dues finestres (una d'elles d'incògnit) per provar-la.
     ├── socket.js              connexió Socket.IO
     ├── style.css
     ├── composables/
-    │   ├── useMedia.js        càmera i micro (getUserMedia, enumerateDevices)
     │   └── useWebRTC.js       RTCPeerConnection, senyalització i DataChannel
     └── components/
         ├── PantallaNom.vue
-        ├── VideoLocal.vue
         ├── LlistaUsuaris.vue
         └── FinestraXat.vue
 ```
 
-Basat en la guia [Getting started de webrtc.org](https://webrtc.org/getting-started/media-devices).
+Basat en la guia de webrtc.org: [Peer connections](https://webrtc.org/getting-started/peer-connections) i [Data channels](https://webrtc.org/getting-started/data-channels).

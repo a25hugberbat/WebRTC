@@ -27,6 +27,5 @@ function enviarNom() {
       >
       <button type="submit">Entrar</button>
     </form>
-    <p class="ajuda">En entrar et demanarà permís per a la càmera i el micro.</p>
   </section>
 </template>

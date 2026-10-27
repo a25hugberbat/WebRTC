@@ -1,13 +1,11 @@
 // ============================================================
-//  useWebRTC: lista de conectados, conexiones P2P y chat
+//  useWebRTC: lista de conectados, conexiones P2P y chat de texto
 //  Basado en la guía https://webrtc.org/getting-started/
 //   - Peer connections  -> RTCPeerConnection, offer/answer, ICE
-//   - Remote streams    -> addTrack y evento 'track'
 //   - Data channels     -> mensajes de texto
 // ============================================================
-import { ref, reactive, markRaw } from 'vue';
+import { ref, reactive } from 'vue';
 import { socket } from '../socket';
-import { useMedia } from './useMedia';
 
 // Configuración igual que en la guía (servidor STUN de Google)
 const configuration = {
@@ -18,14 +16,12 @@ const configuration = {
 const meuId = ref(socket.id || '');
 const usuaris = ref([]);     // [{ id, nom }] que nos manda el servidor
 const xatObert = ref(null);  // id del usuario con el que hablo ahora
-const xats = reactive({});   // id -> { missatges, noLlegits, connectat, stream }
+const xats = reactive({});   // id -> { missatges, noLlegits, connectat }
 
 // ---------- Estado NO reactivo (objetos de WebRTC) ----------
 // Las RTCPeerConnection NO se meten en reactive(): son objetos del
 // navegador y Vue no necesita vigilarlos.
 const connexions = new Map(); // id -> { pc, canal, cua }
-
-const { localStream } = useMedia();
 
 // ============================================================
 //  Ayudas
@@ -35,10 +31,10 @@ function nomDe(id) {
   return u ? u.nom : '???';
 }
 
-// Crea (si no existe) el "xat" de un usuario: sus mensajes y su vídeo
+// Crea (si no existe) el "xat" de un usuario: sus mensajes
 function crearXat(id) {
   if (!xats[id]) {
-    xats[id] = { missatges: [], noLlegits: 0, connectat: false, stream: null };
+    xats[id] = { missatges: [], noLlegits: 0, connectat: false };
   }
   return xats[id];
 }
@@ -80,20 +76,7 @@ function crearConnexio(id) {
   const peerConnection = new RTCPeerConnection(configuration);
   const c = { pc: peerConnection, canal: null, cua: Promise.resolve() };
   connexions.set(id, c);
-  const xat = crearXat(id);
-
-  // Remote streams: enviamos cada pista (vídeo y audio) de mi cámara
-  if (localStream.value) {
-    localStream.value.getTracks().forEach(track => {
-      peerConnection.addTrack(track, localStream.value);
-    });
-  }
-
-  // Remote streams: recibimos el vídeo y el audio del otro
-  peerConnection.addEventListener('track', (event) => {
-    const [remoteStream] = event.streams;
-    if (remoteStream) xat.stream = markRaw(remoteStream);
-  });
+  crearXat(id);
 
   // Trickle ICE: cada candidato que encontramos se lo mandamos al otro
   peerConnection.addEventListener('icecandidate', (event) => {
@@ -140,19 +123,12 @@ function prepararCanal(id, canal) {
 // Yo hago clic en un usuario -> YO llamo (makeCall en la guía)
 async function makeCall(id) {
   const c = crearConnexio(id);
-
-  // Si no tengo cámara, igualmente quiero RECIBIR el vídeo del otro
-  if (!localStream.value) {
-    c.pc.addTransceiver('video', { direction: 'recvonly' });
-    c.pc.addTransceiver('audio', { direction: 'recvonly' });
-  }
-
   prepararCanal(id, c.pc.createDataChannel('xat'));
 
   const offer = await c.pc.createOffer();
   await c.pc.setLocalDescription(offer);
   enviarSenyal(id, { tipus: 'offer', sdp: c.pc.localDescription });
-  afegirSistema(id, 'Trucant a ' + nomDe(id) + '...');
+  afegirSistema(id, 'Connectant amb ' + nomDe(id) + '...');
 }
 
 function tancarConnexio(id) {
@@ -161,10 +137,7 @@ function tancarConnexio(id) {
   if (c.canal) c.canal.close();
   c.pc.close();
   connexions.delete(id);
-  if (xats[id]) {
-    xats[id].connectat = false;
-    xats[id].stream = null;
-  }
+  if (xats[id]) xats[id].connectat = false;
 }
 
 // ============================================================
@@ -177,7 +150,7 @@ function enviarSenyal(a, dades) {
 socket.on('senyal', ({ de, dades }) => {
   let c = connexions.get(de);
 
-  // Caso raro: los dos han llamado a la vez. Gana el id "más pequeño".
+  // Caso raro: los dos han hecho clic a la vez. Gana el id "más pequeño".
   if (dades.tipus === 'offer' && c && c.pc.signalingState === 'have-local-offer') {
     if (socket.id < de) return;   // gano yo: ignoro su oferta
     tancarConnexio(de);           // gana él: tiro la mía
@@ -195,15 +168,15 @@ async function processarSenyal(de, dades) {
   const peerConnection = c.pc;
 
   if (dades.tipus === 'offer') {
-    // Me llaman -> acepto y contesto con una RESPUESTA
+    // Me ofrecen conectar -> acepto y contesto con una RESPUESTA
     await peerConnection.setRemoteDescription(new RTCSessionDescription(dades.sdp));
     const answer = await peerConnection.createAnswer();
     await peerConnection.setLocalDescription(answer);
     enviarSenyal(de, { tipus: 'answer', sdp: peerConnection.localDescription });
-    afegirSistema(de, nomDe(de) + ' et truca');
+    afegirSistema(de, nomDe(de) + ' vol xatejar amb tu');
 
   } else if (dades.tipus === 'answer') {
-    // El otro ha aceptado mi llamada
+    // El otro ha aceptado mi oferta
     await peerConnection.setRemoteDescription(new RTCSessionDescription(dades.sdp));
 
   } else if (dades.tipus === 'candidate') {
@@ -235,15 +208,6 @@ function enviar(text) {
   xats[id].missatges.push({ de: 'meu', text });
 }
 
-// Cuando cambio de cámara, la cambio en TODAS las conexiones.
-// replaceTrack cambia el vídeo que enviamos sin tener que renegociar.
-async function substituirVideo(nouTrack) {
-  for (const c of connexions.values()) {
-    const sender = c.pc.getSenders().find(s => s.track && s.track.kind === 'video');
-    if (sender) await sender.replaceTrack(nouTrack);
-  }
-}
-
 export function useWebRTC() {
   return {
     meuId,
@@ -253,7 +217,6 @@ export function useWebRTC() {
     nomDe,
     entrar,
     obrirXat,
-    enviar,
-    substituirVideo
+    enviar
   };
 }

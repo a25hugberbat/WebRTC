@@ -1,22 +1,27 @@
 {
   "name": "xat-webrtc",
-  "version": "2.0.0",
+  "version": "0.0.0",
   "private": true,
-  "description": "AEA2 Activitat 1 - Xat i videotrucada P2P amb WebRTC i Vue 3, senyalització amb Socket.IO",
+  "type": "module",
   "scripts": {
     "dev": "vite",
-    "server": "node server.js",
     "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server.js",
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.21.2",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
-    "vue": "^3.5.13"
+    "vue": "^3.5.42"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
-    "vite": "^6.0.7"
+    "@vitejs/plugin-vue": "^6.0.8",
+    "vite": "^8.2.2",
+    "vite-plugin-vue-devtools": "^8.2.1"
+  },
+  "engines": {
+    "node": "^22.18.0 || >=24.12.0"
   }
 }
