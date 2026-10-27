@@ -1,13 +1,22 @@
 {
   "name": "xat-webrtc",
-  "version": "1.0.0",
-  "description": "AEA2 Activitat 1 - Xat P2P amb WebRTC, iniciant la comunicació amb WebSockets (Socket.IO)",
-  "main": "server.js",
+  "version": "2.0.0",
+  "private": true,
+  "description": "AEA2 Activitat 1 - Xat i videotrucada P2P amb WebRTC i Vue 3, senyalització amb Socket.IO",
   "scripts": {
+    "dev": "vite",
+    "server": "node server.js",
+    "build": "vite build",
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.21.2",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.7"
   }
 }

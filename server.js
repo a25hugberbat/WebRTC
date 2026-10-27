@@ -1,9 +1,10 @@
 // ============================================================
 //  SERVIDOR DE SEÑALIZACIÓN (signaling server)
-//  Este servidor NO transporta los mensajes del chat.
+//  Este servidor NO transporta el vídeo ni los mensajes del chat.
 //  Solo sirve para:
-//    1) Guardar quién está conectado (nombre de cada usuario)
-//    2) Hacer de "cartero" entre dos navegadores para que
+//    1) Servir la app de Vue ya compilada (carpeta "dist")
+//    2) Guardar quién está conectado (nombre de cada usuario)
+//    3) Hacer de "cartero" entre dos navegadores para que
 //       puedan presentarse y crear la conexión WebRTC P2P.
 // ============================================================
 
@@ -18,8 +19,8 @@ const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
 
-// Servimos los archivos de la carpeta "public" (index.html, client.js, style.css)
-app.use(express.static(path.join(__dirname, 'public')));
+// Servimos la app de Vue compilada con "npm run build"
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // Lista de usuarios conectados: socket.id -> nombre
 const usuaris = new Map();

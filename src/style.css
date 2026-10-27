@@ -8,8 +8,6 @@ body {
   height: 100vh;
 }
 
-.oculta { display: none !important; }
-
 /* ---------- Pantalla del nombre ---------- */
 .targeta {
   max-width: 360px;
@@ -28,7 +26,7 @@ button { border: none; background: #2f6fed; color: #fff; cursor: pointer; }
 button:disabled { background: #9db5e8; cursor: default; }
 
 /* ---------- Pantalla del chat ---------- */
-#pantallaXat { display: flex; height: 100vh; }
+.pantalla-xat { display: flex; height: 100vh; }
 
 .lateral {
   width: 260px;
@@ -50,19 +48,18 @@ button:disabled { background: #9db5e8; cursor: default; }
   object-fit: cover;
   transform: scaleX(-1);        /* efecto espejo, como en una videollamada */
 }
-#estatMedia { margin: 6px 0; }
-#estatMedia:empty { display: none; }
+.video-local .ajuda { margin: 6px 0; }
 
 .controls { display: flex; gap: 6px; margin: 8px 0; }
 .controls button { flex: 1; font-size: .8rem; padding: 6px 8px; background: #4a5568; }
 .controls button:disabled { background: #b8bfca; }
 
-.lateral label { display: block; margin-top: 4px; }
+.video-local label { display: block; margin-top: 4px; }
 #availableCameras { width: 100%; font-size: .85rem; padding: 6px 8px; }
 
 /* ---------- Lista de conectados ---------- */
-#llistaUsuaris { list-style: none; padding: 0; margin: 0; }
-#llistaUsuaris li {
+.llista-usuaris { list-style: none; padding: 0; margin: 0; }
+.llista-usuaris li {
   padding: 8px 10px;
   border-radius: 6px;
   cursor: pointer;
@@ -70,16 +67,16 @@ button:disabled { background: #9db5e8; cursor: default; }
   align-items: center;
   gap: 6px;
 }
-#llistaUsuaris li::before {
+.llista-usuaris li::before {
   content: '';
   width: 8px; height: 8px; border-radius: 50%;
   background: #bbb;              /* gris = sin conexión P2P */
 }
-#llistaUsuaris li.p2p::before { background: #2bb34a; }  /* verde = P2P abierto */
-#llistaUsuaris li:hover { background: #f0f3f8; }
-#llistaUsuaris li.actiu { background: #dfe8fd; }
-#llistaUsuaris li.buit { cursor: default; color: #888; }
-#llistaUsuaris li.buit::before { display: none; }
+.llista-usuaris li.p2p::before { background: #2bb34a; }  /* verde = P2P abierto */
+.llista-usuaris li:hover { background: #f0f3f8; }
+.llista-usuaris li.actiu { background: #dfe8fd; }
+.llista-usuaris li.buit { cursor: default; color: #888; }
+.llista-usuaris li.buit::before { display: none; }
 
 .badge {
   margin-left: auto;
@@ -92,7 +89,8 @@ button:disabled { background: #9db5e8; cursor: default; }
 
 /* ---------- Zona del chat ---------- */
 .xat { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-#capXat {
+.sense-xat { align-items: center; justify-content: center; color: #888; }
+.cap-xat {
   padding: 14px 16px;
   background: #fff;
   border-bottom: 1px solid #ddd;
@@ -100,7 +98,7 @@ button:disabled { background: #9db5e8; cursor: default; }
 }
 
 /* Vídeo de la otra persona */
-#zonaVideo {
+.zona-video {
   background: #111;
   display: flex;
   justify-content: center;
@@ -111,7 +109,7 @@ button:disabled { background: #9db5e8; cursor: default; }
   object-fit: contain;
 }
 
-#missatges {
+.missatges {
   flex: 1;
   list-style: none;
   margin: 0;
@@ -121,15 +119,15 @@ button:disabled { background: #9db5e8; cursor: default; }
   flex-direction: column;
   gap: 6px;
 }
-#missatges li {
+.missatges li {
   max-width: 70%;
   padding: 8px 12px;
   border-radius: 12px;
   word-wrap: break-word;
 }
-#missatges li.meu { align-self: flex-end; background: #2f6fed; color: #fff; }
-#missatges li.seu { align-self: flex-start; background: #fff; }
-#missatges li.sistema {
+.missatges li.meu { align-self: flex-end; background: #2f6fed; color: #fff; }
+.missatges li.seu { align-self: flex-start; background: #fff; }
+.missatges li.sistema {
   align-self: center;
   background: none;
   color: #888;
@@ -137,17 +135,17 @@ button:disabled { background: #9db5e8; cursor: default; }
   font-style: italic;
 }
 
-#formMissatge {
+.form-missatge {
   display: flex;
   gap: 8px;
   padding: 12px;
   background: #fff;
   border-top: 1px solid #ddd;
 }
-#inputMissatge { flex: 1; }
+.form-missatge input { flex: 1; }
 
 @media (max-width: 600px) {
-  #pantallaXat { flex-direction: column; }
+  .pantalla-xat { flex-direction: column; }
   .lateral { width: 100%; max-height: 40vh; border-right: none; border-bottom: 1px solid #ddd; }
   #localVideo { width: 50%; }
   #remoteVideo { max-height: 30vh; }
