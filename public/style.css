@@ -1,0 +1,154 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #eef1f5;
+  color: #222;
+  height: 100vh;
+}
+
+.oculta { display: none !important; }
+
+/* ---------- Pantalla del nombre ---------- */
+.targeta {
+  max-width: 360px;
+  margin: 15vh auto 0;
+  background: #fff;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+}
+.targeta h1 { font-size: 1.3rem; margin-top: 0; }
+.targeta form { display: flex; flex-direction: column; gap: 10px; }
+
+input, button, select { font: inherit; padding: 8px 10px; border-radius: 6px; }
+input, select { border: 1px solid #bbb; background: #fff; }
+button { border: none; background: #2f6fed; color: #fff; cursor: pointer; }
+button:disabled { background: #9db5e8; cursor: default; }
+
+/* ---------- Pantalla del chat ---------- */
+#pantallaXat { display: flex; height: 100vh; }
+
+.lateral {
+  width: 260px;
+  background: #fff;
+  border-right: 1px solid #ddd;
+  padding: 16px;
+  overflow-y: auto;
+}
+.lateral h2 { font-size: 1rem; margin: 16px 0 8px; }
+.jo { margin: 0 0 10px; font-size: .9rem; color: #555; }
+.ajuda { font-size: .8rem; color: #888; }
+
+/* ---------- Mi cámara ---------- */
+#localVideo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #111;
+  border-radius: 8px;
+  object-fit: cover;
+  transform: scaleX(-1);        /* efecto espejo, como en una videollamada */
+}
+#estatMedia { margin: 6px 0; }
+#estatMedia:empty { display: none; }
+
+.controls { display: flex; gap: 6px; margin: 8px 0; }
+.controls button { flex: 1; font-size: .8rem; padding: 6px 8px; background: #4a5568; }
+.controls button:disabled { background: #b8bfca; }
+
+.lateral label { display: block; margin-top: 4px; }
+#availableCameras { width: 100%; font-size: .85rem; padding: 6px 8px; }
+
+/* ---------- Lista de conectados ---------- */
+#llistaUsuaris { list-style: none; padding: 0; margin: 0; }
+#llistaUsuaris li {
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#llistaUsuaris li::before {
+  content: '';
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #bbb;              /* gris = sin conexión P2P */
+}
+#llistaUsuaris li.p2p::before { background: #2bb34a; }  /* verde = P2P abierto */
+#llistaUsuaris li:hover { background: #f0f3f8; }
+#llistaUsuaris li.actiu { background: #dfe8fd; }
+#llistaUsuaris li.buit { cursor: default; color: #888; }
+#llistaUsuaris li.buit::before { display: none; }
+
+.badge {
+  margin-left: auto;
+  background: #e5484d;
+  color: #fff;
+  font-size: .75rem;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+/* ---------- Zona del chat ---------- */
+.xat { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+#capXat {
+  padding: 14px 16px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  font-weight: 600;
+}
+
+/* Vídeo de la otra persona */
+#zonaVideo {
+  background: #111;
+  display: flex;
+  justify-content: center;
+}
+#remoteVideo {
+  width: 100%;
+  max-height: 45vh;
+  object-fit: contain;
+}
+
+#missatges {
+  flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+#missatges li {
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  word-wrap: break-word;
+}
+#missatges li.meu { align-self: flex-end; background: #2f6fed; color: #fff; }
+#missatges li.seu { align-self: flex-start; background: #fff; }
+#missatges li.sistema {
+  align-self: center;
+  background: none;
+  color: #888;
+  font-size: .8rem;
+  font-style: italic;
+}
+
+#formMissatge {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+}
+#inputMissatge { flex: 1; }
+
+@media (max-width: 600px) {
+  #pantallaXat { flex-direction: column; }
+  .lateral { width: 100%; max-height: 40vh; border-right: none; border-bottom: 1px solid #ddd; }
+  #localVideo { width: 50%; }
+  #remoteVideo { max-height: 30vh; }
+}
