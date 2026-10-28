@@ -16,11 +16,11 @@ export default defineConfig({
     },
   },
   // AÑADIDO: en desarrollo (npm run dev) Vite va por el puerto 5173 y el
-  // servidor de Socket.IO por el 3000. Este proxy reenvía /socket.io al 3000.
+  // servidor de Socket.IO por el 20121. Este proxy reenvía /socket.io al 20121.
   server: {
     proxy: {
       '/socket.io': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:20121',
         ws: true,
       },
     },

@@ -20,7 +20,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-const PORT = process.env.PORT || 3000;
+const PORT = 20121;
 
 // Servimos la app de Vue compilada con "npm run build"
 app.use(express.static(fileURLToPath(new URL('./dist', import.meta.url))));

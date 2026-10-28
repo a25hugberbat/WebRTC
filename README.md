@@ -21,13 +21,13 @@ Node 22.18 o més nou (el demana Vite).
 ```bash
 npm install
 npm run build   # compila l'app de Vue a dist/
-npm start       # servidor a http://localhost:3000
+npm start       # servidor a http://localhost:20121
 ```
 
 Per programar (recàrrega automàtica), en dues terminals:
 
 ```bash
-npm run server  # Socket.IO al port 3000
+npm run server  # Socket.IO al port 20121
 npm run dev     # Vite al port 5173 -> obre http://localhost:5173
 ```
 
