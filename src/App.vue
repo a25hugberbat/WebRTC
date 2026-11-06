@@ -5,7 +5,10 @@ import LlistaUsuaris from './components/LlistaUsuaris.vue';
 import FinestraXat from './components/FinestraXat.vue';
 import { useWebRTC } from './composables/useWebRTC';
 
-const { meuId, usuaris, xatObert, xats, nomDe, entrar, obrirXat, enviar } = useWebRTC();
+const {
+  meuId, usuaris, xatObert, xats, nomDe,
+  entrar, obrirXat, enviar, compartirPantalla, aturarPantalla
+} = useWebRTC();
 
 const elMeuNom = ref('');
 
@@ -43,6 +46,8 @@ function quanEntra(nom) {
       :nom="nomDe(xatObert)"
       :xat="xats[xatObert]"
       @enviar="enviar"
+      @compartir="compartirPantalla"
+      @aturar="aturarPantalla()"
     />
     <main v-else class="xat sense-xat">
       Selecciona un usuari de la llista

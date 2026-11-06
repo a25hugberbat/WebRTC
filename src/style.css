@@ -73,11 +73,39 @@ button:disabled { background: #9db5e8; cursor: default; }
 .xat { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .sense-xat { align-items: center; justify-content: center; color: #888; }
 .cap-xat {
-  padding: 14px 16px;
+  padding: 10px 16px;
   background: #fff;
   border-bottom: 1px solid #ddd;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
+
+/* ---------- Compartir pantalla ---------- */
+.boto-pantalla { font-size: .85rem; padding: 6px 12px; }
+.boto-pantalla.aturar { background: #e5484d; }
+
+.zona-pantalla {
+  background: #111;
+  padding: 8px;
+}
+.zona-pantalla video {
+  display: block;
+  width: 100%;
+  max-height: 55vh;
+  object-fit: contain;     /* se ve la pantalla entera, sin recortar */
+}
+.etiqueta { margin: 0 0 6px; font-size: .8rem; color: #aaa; }
+
+.previa {
+  padding: 8px 16px;
+  background: #f7f8fa;
+  border-bottom: 1px solid #ddd;
+}
+.previa .etiqueta { color: #666; }
+.previa video { width: 200px; border-radius: 6px; background: #111; }
 
 .missatges {
   flex: 1;
